@@ -47,8 +47,8 @@ class NowPlayingListenerService : NotificationListenerService() {
       var artistName = textRaw
 
       // パターン検出: "曲名 (アーティスト名)" または "曲名（アーティスト名）"
-      // 全角・半角スペース、全角・半角括弧に対応
-      val pattern = Regex("""^(.*)[\s　]*[（(](.*)[)）]$""")
+      // 全角・半角スペース、全角・半角括弧に対応。非貪欲マッチで最初の括弧を捉える
+      val pattern = Regex("""^(.*?)[\s　]*[（(](.*)[)）]$""")
       val matchResult = pattern.find(titleRaw)
 
       if (matchResult != null) {

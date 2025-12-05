@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import com.girky.nowplayinganalyzer.ui.components.GroupedListItem
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -135,33 +137,23 @@ fun PermissionWarningCard(onClick: () -> Unit) {
 fun HistoryList(historyGroups: Map<LocalDate, List<ListenHistory>>) {
   LazyColumn(
     contentPadding = PaddingValues(16.dp),
-    verticalArrangement = Arrangement.spacedBy(16.dp)
+    verticalArrangement = Arrangement.spacedBy(2.dp) // 要求仕様: アイテム間 2dp
   ) {
     historyGroups.forEach { (date, items) ->
       item {
-        Column {
-          DateHeader(date = date)
-          Spacer(modifier = Modifier.height(8.dp))
-          
-          Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-              containerColor = MaterialTheme.colorScheme.surfaceBright
-            ),
-            shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp)
-          ) {
-            Column {
-              items.forEachIndexed { index, history ->
-                HistoryItem(history = history)
-                if (index < items.size - 1) {
-                   androidx.compose.material3.HorizontalDivider(
-                     color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-                     modifier = Modifier.padding(horizontal = 16.dp)
-                   )
-                }
-              }
-            }
-          }
+        // グループ間の間隔調整 (前のグループとの間を開ける)
+        Spacer(modifier = Modifier.height(16.dp))
+        DateHeader(date = date)
+        Spacer(modifier = Modifier.height(8.dp))
+      }
+      
+      itemsIndexed(items) { index, history ->
+        GroupedListItem(
+            index = index, 
+            totalCount = items.size,
+            onClick = { /* 詳細表示などは今後実装 */ }
+        ) {
+            HistoryItemContent(history = history)
         }
       }
     }
@@ -181,13 +173,15 @@ fun DateHeader(date: LocalDate) {
   )
 }
 
+/**
+ * GroupedListItem の内部コンテンツ
+ */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun HistoryItem(history: ListenHistory) {
+fun HistoryItemContent(history: ListenHistory) {
   Column(
     modifier = Modifier
       .fillMaxWidth()
-      .clickable { /* 詳細表示などは今後実装 */ }
       .padding(16.dp)
   ) {
     Text(
