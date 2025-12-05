@@ -21,8 +21,8 @@ val AppFontFamilyEmphasized = FontFamily(
   Font(
     R.font.google_sans_flex,
     variationSettings = FontVariation.Settings(
-      FontVariation.weight(700)
-      // FontVariation.axis("ROND", 100f) // TODO: Fix unresolved reference
+      FontVariation.weight(700),
+      FontVariation.Setting("ROND", 100f) // axis -> setting に修正
     )
   ),
   Font(R.font.noto_sans_jp)
