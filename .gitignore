@@ -24,3 +24,5 @@ build_log*.txt
 
 # ビルド中間生成物
 *.salive
+error_*.txt
+build_error.txt

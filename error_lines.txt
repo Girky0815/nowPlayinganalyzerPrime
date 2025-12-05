@@ -1,4 +1,0 @@
-e: file:///C:/Users/kirby/AndroidStudioProjects/nowPlayinganalyzerPrime/app/src/main/java/com/girky/nowplayinganalyzer/ui/components/ResponsiveNavBar.kt:58:9 Unresolved reference 'Box'.
-e: file:///C:/Users/kirby/AndroidStudioProjects/nowPlayinganalyzerPrime/app/src/main/java/com/girky/nowplayinganalyzer/ui/components/ResponsiveNavBar.kt:59:33 Unresolved reference 'fillMaxWidth'.
-e: file:///C:/Users/kirby/AndroidStudioProjects/nowPlayinganalyzerPrime/app/src/main/java/com/girky/nowplayinganalyzer/ui/components/ResponsiveNavBar.kt:63:13 @Composable invocations can only happen from the context of a @Composable function
-FAILURE: Build failed with an exception.
