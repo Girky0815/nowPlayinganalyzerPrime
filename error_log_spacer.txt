@@ -1,0 +1,16 @@
+
+> WARNING: java.lang.System::load has been called by net.rubygrapefruit.platform.internal.NativeLibraryLoader in an unnamed module (file:/C:/Users/kirby/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/native-platform-0.22-milestone-28.jar)
+  WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+  WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+  
+  > Task :app:preBuild UP-TO-DATE
+  > Task :app:preDebugBuild UP-TO-DATE
+> e: file:///C:/Users/kirby/AndroidStudioProjects/nowPlayinganalyzerPrime/app/src/main/java/com/girky/nowplayinganalyzer/ui/components/ResponsiveNavBar.kt:53:29 Unresolved reference 'fillMaxWidth'.
+  
+> FAILURE: Build failed with an exception.
+  
+  * What went wrong:
+  Execution failed for task ':app:compileDebugKotlin'.
+  > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+     > Compilation error. See log for more details
+
