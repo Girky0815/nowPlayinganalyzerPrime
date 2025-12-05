@@ -72,7 +72,7 @@ dependencies {
   ksp(libs.androidx.room.compiler)
   
   // Google GenAI
-  implementation(libs.google.genai)
+//  implementation(libs.google.genai)
 
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
