@@ -14,3 +14,13 @@
 .cxx
 local.properties
 build_log*.txt
+
+# .idea フォルダ内の個人設定を無視
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/caches/
+.idea/deploymentTargetSelector.xml
+.idea/appInsightsSettings.xml
+
+# ビルド中間生成物
+*.salive
