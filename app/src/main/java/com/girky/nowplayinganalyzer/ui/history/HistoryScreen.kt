@@ -49,7 +49,8 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HistoryScreen(
-  viewModel: HistoryViewModel = viewModel(factory = HistoryViewModel.Factory)
+  viewModel: HistoryViewModel = viewModel(factory = HistoryViewModel.Factory),
+  contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
   val context = LocalContext.current
   val lifecycleOwner = LocalLifecycleOwner.current
@@ -98,7 +99,10 @@ fun HistoryScreen(
           Text(text = "履歴がありません", style = MaterialTheme.typography.bodyLarge)
         }
       } else {
-        HistoryList(historyGroups = historyGroups)
+        HistoryList(
+          historyGroups = historyGroups,
+          contentPadding = contentPadding
+        )
       }
     }
   }
@@ -134,9 +138,18 @@ fun PermissionWarningCard(onClick: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun HistoryList(historyGroups: Map<LocalDate, List<ListenHistory>>) {
+fun HistoryList(
+  historyGroups: Map<LocalDate, List<ListenHistory>>,
+  contentPadding: PaddingValues
+) {
+  val layoutDirection = androidx.compose.ui.platform.LocalLayoutDirection.current
   LazyColumn(
-    contentPadding = PaddingValues(16.dp),
+    contentPadding = PaddingValues(
+      top = 16.dp + contentPadding.calculateTopPadding(),
+      bottom = 16.dp + contentPadding.calculateBottomPadding(),
+      start = 16.dp + contentPadding.calculateLeftPadding(layoutDirection),
+      end = 16.dp + contentPadding.calculateRightPadding(layoutDirection)
+    ),
     verticalArrangement = Arrangement.spacedBy(2.dp) // 要求仕様: アイテム間 2dp
   ) {
     historyGroups.forEach { (date, items) ->

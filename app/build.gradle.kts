@@ -34,6 +34,7 @@ android {
   }
   buildFeatures {
     compose = true
+    buildConfig = true
   }
   packaging {
     resources {
@@ -56,12 +57,14 @@ dependencies {
   implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.androidx.lifecycle.viewmodel.compose) // 追加
   implementation(libs.androidx.activity.compose)
+  implementation(libs.androidx.navigation.compose) // Added Navigation Compose
   implementation(platform(libs.androidx.compose.bom))
   implementation(libs.androidx.compose.ui)
   implementation(libs.androidx.compose.ui.graphics)
   implementation(libs.androidx.compose.material.icons.extended) // 追加
   implementation(libs.androidx.compose.ui.tooling.preview)
   implementation(libs.androidx.compose.material3)
+  implementation(libs.androidx.datastore.preferences) // Added DataStore
   
   // Material-Kolor
   implementation(libs.material.kolor)
