@@ -17,22 +17,34 @@ class NowPlayingListenerService : NotificationListenerService() {
   private val job = SupervisorJob()
   private val scope = CoroutineScope(Dispatchers.IO + job)
 
+  override fun onListenerConnected() {
+    super.onListenerConnected()
+    Log.i(TAG, "NowPlayingListenerService connected")
+  }
+
   override fun onNotificationPosted(sbn: StatusBarNotification?) {
     super.onNotificationPosted(sbn)
     if (sbn == null) return
 
     val packageName = sbn.packageName
-    // Pixel Ambient Services (Now Playing) のパッケージ名
-    if (packageName != "com.google.intelligence.sense") return
+    Log.v(TAG, "onNotificationPosted: $packageName")
+
+    // Pixel Ambient Services / Android System Intelligence のパッケージ名
+    // com.google.intelligence.sense (Old)
+    // com.google.android.as (New)
+    if (packageName != "com.google.intelligence.sense" && packageName != "com.google.android.as") {
+      return
+    }
 
     val extras = sbn.notification.extras
     val title = extras.getString(Notification.EXTRA_TITLE)
-    val text = extras.getString(Notification.EXTRA_TEXT) // Artist name often here
+    val text = extras.getString(Notification.EXTRA_TEXT)
 
-    Log.d(TAG, "Notification received from Pixel Ambient Services: Title=$title, Text=$text")
+    Log.i(TAG, "Target notification received from $packageName: Title=$title, Text=$text")
 
-    if (!title.isNullOrBlank() && !text.isNullOrBlank()) {
-      saveListenHistory(title, text)
+    if (!title.isNullOrBlank()) {
+      // 歌手名が null の場合もあるため、title だけでも保存を試みる
+      saveListenHistory(title, text ?: "Unknown Artist")
     }
   }
 
