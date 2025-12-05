@@ -70,7 +70,7 @@ fun HistoryScreen(
 
   Scaffold(
     modifier = Modifier.fillMaxSize(),
-    containerColor = MaterialTheme.colorScheme.background // Theme.kt で設定した SurfaceContainerHigh が反映されるはず
+    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
   ) { innerPadding ->
     Column(
       modifier = Modifier
@@ -134,14 +134,35 @@ fun PermissionWarningCard(onClick: () -> Unit) {
 @Composable
 fun HistoryList(historyGroups: Map<LocalDate, List<ListenHistory>>) {
   LazyColumn(
-    contentPadding = PaddingValues(bottom = 16.dp)
+    contentPadding = PaddingValues(16.dp),
+    verticalArrangement = Arrangement.spacedBy(16.dp)
   ) {
     historyGroups.forEach { (date, items) ->
       item {
-        DateHeader(date = date)
-      }
-      items(items) { history ->
-        HistoryItem(history = history)
+        Column {
+          DateHeader(date = date)
+          Spacer(modifier = Modifier.height(8.dp))
+          
+          Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+              containerColor = MaterialTheme.colorScheme.surfaceBright
+            ),
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp)
+          ) {
+            Column {
+              items.forEachIndexed { index, history ->
+                HistoryItem(history = history)
+                if (index < items.size - 1) {
+                   androidx.compose.material3.HorizontalDivider(
+                     color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                     modifier = Modifier.padding(horizontal = 16.dp)
+                   )
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -153,46 +174,46 @@ fun DateHeader(date: LocalDate) {
   Text(
     text = date.format(formatter),
     style = MaterialTheme.typography.titleMedium,
-    color = MaterialTheme.colorScheme.primary,
+    color = MaterialTheme.colorScheme.onSurfaceVariant,
     modifier = Modifier
       .fillMaxWidth()
-      .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
-      .padding(horizontal = 16.dp, vertical = 8.dp)
+      .padding(horizontal = 8.dp)
   )
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HistoryItem(history: ListenHistory) {
-  // M3E ぽさを出すために SurfaceBright のような色を使いたいが、
-  // Theme.kt の設定次第。ここでは Card を使用。
-  Card(
+  Column(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(horizontal = 16.dp, vertical = 4.dp),
-    colors = CardDefaults.cardColors(
-      containerColor = MaterialTheme.colorScheme.surfaceVariant // 明るめの色想定
-    )
+      .clickable { /* 詳細表示などは今後実装 */ }
+      .padding(16.dp)
   ) {
-    Column(modifier = Modifier.padding(16.dp)) {
-      Text(
-        text = history.title,
-        style = MaterialTheme.typography.titleLarge.copy(
-          fontFamily = AppFontFamilyEmphasized
+    Text(
+      text = history.title,
+      style = MaterialTheme.typography.titleMedium.copy(
+        fontFamily = AppFontFamilyEmphasized,
+        fontWeight = FontWeight.Bold
+      ),
+      color = MaterialTheme.colorScheme.onSurface
+    )
+    Spacer(modifier = Modifier.height(4.dp))
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+          text = history.artist,
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-      )
-      Spacer(modifier = Modifier.height(4.dp))
-      Text(
-        text = history.artist,
-        style = MaterialTheme.typography.bodyMedium
-      )
-      Spacer(modifier = Modifier.height(8.dp))
-      val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-      Text(
-        text = history.timestamp.format(timeFormatter),
-        style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.outline
-      )
+        Spacer(modifier = Modifier.weight(1f))
+        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+        Text(
+          text = history.timestamp.format(timeFormatter),
+          style = MaterialTheme.typography.labelSmall,
+          color = MaterialTheme.colorScheme.outline
+        )
     }
   }
 }

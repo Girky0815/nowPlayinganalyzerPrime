@@ -21,7 +21,7 @@ val AppFontFamilyEmphasized = FontFamily(
   Font(
     R.font.google_sans_flex,
     variationSettings = FontVariation.Settings(
-      FontVariation.weight(700),
+      FontVariation.weight(600),
       FontVariation.Setting("ROND", 100f) // axis -> setting に修正
     )
   ),

@@ -37,14 +37,34 @@ class NowPlayingListenerService : NotificationListenerService() {
     }
 
     val extras = sbn.notification.extras
-    val title = extras.getString(Notification.EXTRA_TITLE)
-    val text = extras.getString(Notification.EXTRA_TEXT)
+    val titleRaw = extras.getString(Notification.EXTRA_TITLE) ?: ""
+    val textRaw = extras.getString(Notification.EXTRA_TEXT) ?: ""
 
-    Log.i(TAG, "Target notification received from $packageName: Title=$title, Text=$text")
+    Log.i(TAG, "Target notification received from $packageName: Title=$titleRaw, Text=$textRaw")
 
-    if (!title.isNullOrBlank()) {
-      // 歌手名が null の場合もあるため、title だけでも保存を試みる
-      saveListenHistory(title, text ?: "Unknown Artist")
+    if (titleRaw.isNotBlank()) {
+      var songTitle = titleRaw
+      var artistName = textRaw
+
+      // パターン検出: "曲名 (アーティスト名)" または "曲名（アーティスト名）"
+      // 全角・半角スペース、全角・半角括弧に対応
+      val pattern = Regex("""^(.*)[\s　]*[（(](.*)[)）]$""")
+      val matchResult = pattern.find(titleRaw)
+
+      if (matchResult != null) {
+        val (t, a) = matchResult.destructured
+        songTitle = t.trim()
+        artistName = a.trim()
+        Log.d(TAG, "Parsed Notification: Title='$songTitle', Artist='$artistName'")
+      } else {
+        // パターンにマッチしない場合
+        // textRaw が "タップで..." などのシステムメッセージの場合はアーティスト名として不適切なので無視または不明とする
+        if (textRaw.contains("タップ") || textRaw.contains("履歴")) {
+           artistName = "Unknown Artist"
+        }
+      }
+
+      saveListenHistory(songTitle, artistName)
     }
   }
 
