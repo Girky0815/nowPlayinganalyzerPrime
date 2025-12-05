@@ -149,7 +149,7 @@ fun HistoryList(historyGroups: Map<LocalDate, List<ListenHistory>>) {
 
 @Composable
 fun DateHeader(date: LocalDate) {
-  val formatter = DateTimeFormatter.ofPattern("MK月d日 (E)", Locale.JAPAN)
+  val formatter = DateTimeFormatter.ofPattern("M月d日 (E)", Locale.JAPAN)
   Text(
     text = date.format(formatter),
     style = MaterialTheme.typography.titleMedium,
